@@ -6,6 +6,7 @@ import { SignUpLink } from '../SignUp';
 import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import * as ROLES from "../../constants/roles";
 
 const SignInPage = () => (
     <div>
@@ -17,6 +18,7 @@ const SignInPage = () => (
 );
 
 const INITIAL_STATE = {
+    username: '',
     email: '',
     password: '',
     error: null,
@@ -34,8 +36,8 @@ class SignInFormBase extends Component {
 
         this.props.firebase
             .doSignInWithEmailAndPassword(email, password)
-            .then(() => {
-                this.setState({ ...INITIAL_STATE });
+            .then(authUser => {
+                this.setState({ error: null });
                 this.props.history.push(ROUTES.HOME);
             })
             .catch(error => {
