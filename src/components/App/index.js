@@ -7,6 +7,7 @@ import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 import PasswordForgetPage from '../PasswordForget';
 import CoursesPage from '../Courses';
+import Timeline from '../Timeline';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
 
@@ -26,6 +27,7 @@ const App = () => (
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
             <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
             <Route path={ROUTES.COURSES} component={CoursesPage} />
+            <Route path={ROUTES.TIMELINE} component={Timeline} />
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
             <Route path={ROUTES.ADMIN} component={AdminPage} />
         </div>
