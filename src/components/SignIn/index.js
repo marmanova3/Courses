@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
 import { SignUpLink } from '../SignUp';
 import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
@@ -38,7 +37,7 @@ class SignInFormBase extends Component {
             .doSignInWithEmailAndPassword(email, password)
             .then(authUser => {
                 this.setState({ error: null });
-                this.props.history.push(ROUTES.HOME);
+                this.props.history.push(ROUTES.COURSES);
             })
             .catch(error => {
                 this.setState({ error });
