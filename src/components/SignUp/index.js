@@ -4,7 +4,7 @@ import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 
 import * as ROUTES from '../../constants/routes';
-import * as ROLES from '../../constants/roles';
+// import * as ROLES from '../../constants/roles';
 
 const SignUpPage = () => (
     <div>
@@ -15,6 +15,8 @@ const SignUpPage = () => (
 
 const INITIAL_STATE = {
     username: '',
+    name: '',
+    surname: '',
     email: '',
     passwordOne: '',
     passwordTwo: '',
@@ -30,12 +32,12 @@ class SignUpFormBase extends Component {
     }
 
     onSubmit = event => {
-        const { username, email, passwordOne, isAdmin } = this.state;
-        const roles = [];
+        const { username, name, surname, email, passwordOne } = this.state; //isAdmin
+        // const roles = [];
 
-        if (isAdmin) {
-            roles.push(ROLES.ADMIN);
-        }
+        // if (isAdmin) {
+        //     roles.push(ROLES.ADMIN);
+        // }
 
         this.props.firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
@@ -44,8 +46,10 @@ class SignUpFormBase extends Component {
                     .user(authUser.user.uid)
                     .set({
                         username,
+                        name,
+                        surname,
                         email,
-                        roles,
+                        // roles,
                     },
                     { merge: true },
                     );
@@ -65,17 +69,19 @@ class SignUpFormBase extends Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
-    onChangeCheckbox = event => {
-        this.setState({ [event.target.name]: event.target.checked });
-    };
+    // onChangeCheckbox = event => {
+    //     this.setState({ [event.target.name]: event.target.checked });
+    // };
 
     render() {
         const {
             username,
+            name,
+            surname,
             email,
             passwordOne,
             passwordTwo,
-            isAdmin,
+            // isAdmin,
             error,
         } = this.state;
 
@@ -83,7 +89,9 @@ class SignUpFormBase extends Component {
             passwordOne !== passwordTwo ||
             passwordOne === '' ||
             email === '' ||
-            username === '';
+            username === '' ||
+            name === '' ||
+            surname === '';
 
         return (
             <form onSubmit={this.onSubmit}>
@@ -92,38 +100,52 @@ class SignUpFormBase extends Component {
                     value={username}
                     onChange={this.onChange}
                     type="text"
-                    placeholder="Full Name"
-                />
+                    placeholder="Username"
+                /><br></br>
+                <input
+                    name="name"
+                    value={name}
+                    onChange={this.onChange}
+                    type="text"
+                    placeholder="Name"
+                /><br></br>
+                <input
+                    name="surname"
+                    value={surname}
+                    onChange={this.onChange}
+                    type="text"
+                    placeholder="Surname"
+                /><br></br>
                 <input
                     name="email"
                     value={email}
                     onChange={this.onChange}
                     type="text"
                     placeholder="Email Address"
-                />
+                /><br></br>
                 <input
                     name="passwordOne"
                     value={passwordOne}
                     onChange={this.onChange}
                     type="password"
                     placeholder="Password"
-                />
+                /><br></br>
                 <input
                     name="passwordTwo"
                     value={passwordTwo}
                     onChange={this.onChange}
                     type="password"
                     placeholder="Confirm Password"
-                />
-                <label>
-                    Admin:
-                    <input
-                        name="isAdmin"
-                        type="checkbox"
-                        checked={isAdmin}
-                        onChange={this.onChangeCheckbox}
-                    />
-                </label>
+                /><br></br>
+                {/*<label>*/}
+                    {/*Admin:*/}
+                    {/*<input*/}
+                        {/*name="isAdmin"*/}
+                        {/*type="checkbox"*/}
+                        {/*checked={isAdmin}*/}
+                        {/*onChange={this.onChangeCheckbox}*/}
+                    {/*/>*/}
+                {/*</label>*/}
                 <button disabled={isInvalid} type="submit">
                     Sign Up
                 </button>

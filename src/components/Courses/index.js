@@ -47,6 +47,13 @@ class CoursesPage extends Component {
             })
     }
 
+    // enroll() {
+    //     authUser
+    //     this.props.firebase.use
+    // this.props.firebase.enrollments().doc().add({
+                                                // })
+    // }
+
     render() {
         const {courses, loading} = this.state;
 
