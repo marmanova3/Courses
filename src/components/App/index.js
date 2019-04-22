@@ -6,6 +6,7 @@ import LandingPage from '../Landing';
 import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 import PasswordForgetPage from '../PasswordForget';
+import CreateTimeline from "../CreateTimeline";
 import CoursesPage from '../Courses';
 import Timeline from '../Timeline';
 import AccountPage from '../Account';
@@ -13,16 +14,15 @@ import AdminPage from '../Admin';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
-import CreateTimeline from "../CreateTimeline";
+import { withCourse } from '../Session';
+import {compose} from "recompose";
 
-
-const App = () => (
+const AppBase = () => (
     <Router>
         <div>
             <Navigation />
 
             <hr />
-
             <Route exact path={ROUTES.LANDING} component={LandingPage} />
             <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
@@ -36,4 +36,9 @@ const App = () => (
     </Router>
 );
 
-export default withAuthentication(App);
+const App = compose(
+    withCourse,
+    withAuthentication,
+)(AppBase);
+
+export default App;

@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import {withFirebase} from "../Firebase";
 import withAuthorization from "../Session/withAuthorization";
+import { withRouter } from 'react-router-dom';
+import * as ROUTES from "../../constants/routes";
+import {compose} from "recompose";
 
 const CreateTimeline = () => (
     <div>
         <h1>Create Timeline</h1>
-        <CreateBlockForm />
+        <CreateTimelineForm />
     </div>
 );
 
@@ -39,14 +43,7 @@ class CreateBlockForm extends Component {
             type
         } = this.state;
 
-        let fromDateTime = new Date(fromDate+" "+fromTime);
-        let toDateTime = new Date(toDate+" "+toTime);
-        console.log(fromDateTime);
-        console.log(toDateTime);
-        console.log(fromDate+" "+fromTime);
-        // let duration = fromDateTime
-
-        this.props.firebase.courseEvents().doc()
+        this.props.firebase.courseEvents()
             .add({
                 name: name,
                 about: about,
@@ -55,13 +52,17 @@ class CreateBlockForm extends Component {
                 dateTime: fromDate+" "+fromTime,
                 duration: 60,
             })
-            .then(function(docRef) {
+            .then(docRef => {
                 console.log("Document written with ID: ", docRef.id);
+                this.setState({ ...INITIAL_STATE });
+                this.props.history.push(ROUTES.CREATE_TIMELINE);
             })
-            .catch(function(error) {
+            .catch((error) => {
                 console.log("Error getting documents: ", error);
+                this.setState({ error });
             });
-        console.log(type);
+
+        event.preventDefault();
     };
 
     onChange = event => {
@@ -157,6 +158,14 @@ class CreateBlockForm extends Component {
     }
 }
 
+const CreateTimelineForm = compose(
+    withRouter,
+    withFirebase
+)(CreateBlockForm);
+
+
 const condition = authUser => !!authUser;
 
 export default withAuthorization(condition)(CreateTimeline);
+
+export { CreateTimelineForm };

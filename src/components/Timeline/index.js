@@ -1,6 +1,7 @@
 import withAuthorization from "../Session/withAuthorization";
 import {Component} from "react";
 import React from "react";
+import EventsList from "../Events"
 
 class Timeline extends Component {
     constructor(props) {
@@ -24,37 +25,40 @@ class Timeline extends Component {
             .then(snapshot => {
                 const courseInstance = snapshot.data();
 
-                this.setState({
-                    courseInstance,
-                });
-
-                this.props.firebase.course(courseInstance.instanceOf)
-                    .get()
-                    .then(snapshot => {
-                        const course = snapshot.data();
-
-                        this.setState({
-                            name: course.name,
-                        });
-                    })
-
-                this.props.firebase
-                    .courseEvents()
-                    .where("course", "==", params.id)
-                    .get()
-                    .then(snapshot => {
-                        let events = [];
-
-                        snapshot.forEach(doc =>
-                            events.push({ ...doc.data(), timestamp: doc.data().dateTime.toDate(), eid: doc.id }),
-                            // console.log(doc.data().dateTime.toDate())
-                        );
-
-                        this.setState({
-                            loading: false,
-                            events: events,
-                        });
+                if(courseInstance) {
+                    this.setState({
+                        courseInstance,
                     });
+
+                    console.log(this);
+                    this.props.firebase.course(this.state.courseInstance.instanceOf)
+                        .get()
+                        .then(snapshot => {
+                            const course = snapshot.data();
+
+                            this.setState({
+                                name: course.name,
+                            });
+                        })
+
+                    this.props.firebase
+                        .courseEvents()
+                        .where("course", "==", params.id)
+                        .get()
+                        .then(snapshot => {
+                            let events = [];
+
+                            snapshot.forEach(doc =>
+                                    events.push({...doc.data(), timestamp: doc.data().dateTime.toDate(), eid: doc.id}),
+                                // console.log(doc.data().dateTime.toDate())
+                            );
+
+                            this.setState({
+                                loading: false,
+                                events: events,
+                            });
+                        });
+                }
             });
     }
 
@@ -69,30 +73,8 @@ class Timeline extends Component {
     }
 };
 
-const EventsList = ({ courseEvents }) => (
-    <ul>
-        {courseEvents.map(event => (
-            <li key={event.eid}>
-                {/*<span>*/}
-                    {/*<strong> ID:</strong> {event.eid}*/}
-                {/*</span>*/}
-                <span>
-                  <strong> Name:</strong> {event.name}
-                </span>
-                <span>
-                  <strong> Date and time:</strong> {event.timestamp.toString()}
-                </span>
-                <span>
-                  <strong> Duration:</strong> {event.duration}
-                </span>
-                <span>
-                  <strong> Location:</strong> {event.location}
-                </span>
-            </li>
-        ))}
-    </ul>
-);
-
 const condition = authUser => !!authUser;
+
+//TODO condition + only enrolled user
 
 export default withAuthorization(condition)(Timeline);

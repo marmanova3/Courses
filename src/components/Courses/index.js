@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import { withAuthorization } from '../Session';
+import {CourseContext, withAuthorization} from '../Session';
 import {Link} from "react-router-dom";
 
 class CoursesPage extends Component {
     constructor(props) {
         super(props);
+        this.enroll = this.enroll.bind(this);
 
         this.state = {
             loading: false,
@@ -47,12 +48,20 @@ class CoursesPage extends Component {
             })
     }
 
-    // enroll() {
-    //     authUser
-    //     this.props.firebase.use
-    // this.props.firebase.enrollments().doc().add({
-                                                // })
-    // }
+    enroll(course) {
+        console.log(this.props.authUser)
+        this.props.firebase.enrollments()
+            .add({
+                user: this.props.authUser.uid,
+                courseInstance: course.cid
+            })
+            .then(docRef => {
+                console.log("Document written with ID: ", docRef.id);
+                this.props.history.push({
+                    pathname: '/timeline/'+ course.cid
+                });
+            })
+    }
 
     render() {
         const {courses, loading} = this.state;
@@ -64,13 +73,13 @@ class CoursesPage extends Component {
                 {loading && <div>Loading ...</div>}
 
                 <h2>My Courses</h2>
-                <CoursesList courses={courses} fun={myCourses}  button={false}/>
+                <CoursesList courses={courses} fun={myCourses}  button={false} enroll={this.enroll}/>
 
                 <h2>Active Courses</h2>
-                <CoursesList courses={courses} fun={activeCourses} button={true}/>
+                <CoursesList courses={courses} fun={activeCourses} button={true} enroll={this.enroll} firebase={this.props.firebase}/>
 
                 <h2>Archived Courses</h2>
-                <CoursesList courses={courses} fun={archivedCourses} button={false}/>
+                <CoursesList courses={courses} fun={archivedCourses} button={false} enroll={this.enroll}/>
             </div>
         );
     }
@@ -89,14 +98,13 @@ function archivedCourses(year) {
     return year < 2019;
 }
 
-const CoursesList = ({ courses, fun, button }) => (
+const CoursesList = ({ courses, fun, button, enroll }) => (
+    <CourseContext.Consumer>
+        {({course, setCourse}) => (
     <ul>
         {courses.filter(courses => (fun(courses.year))).map(course => (
-            <Link to={'/timeline/'+course.cid}>
-            <li key={course.cid}>
-                {/*<span>*/}
-                  {/*<strong> ID:</strong> {course.cid}*/}
-                {/*</span>*/}
+           <Link to={'/timeline/'+course.cid}>
+            <li key={course.cid} onClick={() => setCourse(course)}>
                 <span>
                   <strong> Name:</strong> {course.name}
                 </span>
@@ -109,13 +117,14 @@ const CoursesList = ({ courses, fun, button }) => (
                 <span>
                   <strong> Year:</strong> {course.year}
                 </span>
-                {button && <button>Enroll</button>}
+                {button && <button onClick={() => {enroll(course)}}>Enroll</button>}
             </li>
             </Link>
         ))}
     </ul>
+        )}
+    </CourseContext.Consumer>
 );
-
 
 const condition = authUser => !!authUser;
 

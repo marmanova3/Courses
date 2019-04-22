@@ -54,7 +54,7 @@ class SignUpFormBase extends Component {
                     { merge: true },
                     );
             })
-            .then(authUser => {
+            .then(() => {
                 this.setState({ ...INITIAL_STATE });
                 this.props.history.push(ROUTES.COURSES);
             })

@@ -1,5 +1,6 @@
 import React from 'react';
 
 const AuthUserContext = React.createContext(null);
+const CourseContext = React.createContext(null);
 
-export default AuthUserContext;
+export { AuthUserContext, CourseContext };
