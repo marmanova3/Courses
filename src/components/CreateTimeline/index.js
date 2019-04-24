@@ -21,7 +21,6 @@ const INITIAL_STATE = {
     toTime: '',
     location: '',
     type: 'session',
-    error: null,
 };
 
 class CreateBlockForm extends Component {
@@ -79,7 +78,6 @@ class CreateBlockForm extends Component {
             toTime,
             location,
             type,
-            error
         } = this.state;
 
         const isInvalid =
@@ -151,8 +149,6 @@ class CreateBlockForm extends Component {
                 <button disabled={isInvalid} type="submit">
                     Sign Up
                 </button>
-
-                {error && <p>{error.message}</p>}
             </form>
         )
     }
@@ -163,8 +159,9 @@ const CreateTimelineForm = compose(
     withFirebase
 )(CreateBlockForm);
 
-
 const condition = authUser => !!authUser;
+
+// const condition = ({authUser, course}) => authUser && (authUser.uid===course.hasInstructor);
 
 export default withAuthorization(condition)(CreateTimeline);
 

@@ -18,9 +18,6 @@ const withCourse = Component => {
             };
         }
 
-        componentDidMount() {
-        }
-
         render() {
             return (
                 <CourseContext.Provider value={this.state}>

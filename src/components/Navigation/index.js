@@ -12,7 +12,7 @@ const Navigation = () => (
         {authUser => authUser ? (
            <CourseContext.Consumer>
                {({course, setCourse}) => course ? (
-                   <NavigationCourse authUser={authUser} course={course} />
+                   <NavigationCourse authUser={authUser} course={course} setCourse={setCourse}/>
                 ) : (
                    <NavigationAuth authUser={authUser} />
                 )}
@@ -56,10 +56,13 @@ const NavigationNonAuth = () => (
     </ul>
 );
 
-const NavigationCourse = ({ authUser, course }) => (
+const NavigationCourse = ({ authUser, course, setCourse }) => (
   <ul>
+      <li onClick={() => setCourse(null)}>
+          <Link to={ROUTES.COURSES}>Back to Courses</Link>
+      </li>
       <li>
-          <Link to={ROUTES.TIMELINE}>Timeline</Link>
+          <Link to={'/timeline/'+course.cid}>Timeline</Link>
       </li>
       { course.hasInstructor === authUser.uid && (
       <li>

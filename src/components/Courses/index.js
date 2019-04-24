@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {CourseContext, withAuthorization} from '../Session';
 import {Link} from "react-router-dom";
+import {Enroll} from "../Enrollments";
 
 class CoursesPage extends Component {
     constructor(props) {
@@ -10,14 +11,15 @@ class CoursesPage extends Component {
         this.state = {
             loading: false,
             courses: [],
+            myCourses: [],
         };
     }
 
     componentDidMount() {
         this.setState({ loading: true });
-        let courseInstances = []
-        let courses = []
-        let combined = []
+        let courseInstances = [];
+        let courses = [];
+        let combined = [];
 
         this.props.firebase.courseInstances()
             .get()
@@ -32,39 +34,54 @@ class CoursesPage extends Component {
                     .then(snapshot => {
 
                         snapshot.forEach(doc => {
-                            courses.push({ ...doc.data(), cid: doc.id });
+                            courses.push({...doc.data(), cid: doc.id});
                         });
 
                         courseInstances.forEach(courseInstance => {
                             let course = courses.find(course => (courseInstance.instanceOf === course.cid));
                             combined.push({...courseInstance, ...course, cid: courseInstance.cid});
-                        })
+                        });
 
                         this.setState({
                             courses: combined,
                             loading: false,
                         });
                     })
-            })
+                    .then(
+                        this.props.firebase.enrollments()
+                            .where("user", "==", this.props.authUser.uid)
+                            .get()
+                            .then(snapshot => {
+                                let enrollments = [];
+
+                                snapshot.forEach(doc => {
+                                    enrollments.push({...doc.data()});
+                                });
+                                let myCourses = [];
+                                this.state.courses.forEach(course => {enrollments.forEach(enrollment => {
+                                    if (course.cid === enrollment.courseInstance) {
+                                        myCourses.push(course);
+                                    }
+                                })});
+
+                                this.setState({
+                                    myCourses,
+                                })
+                            })
+                        )
+                    })
     }
 
     enroll(course) {
-        console.log(this.props.authUser)
-        this.props.firebase.enrollments()
-            .add({
-                user: this.props.authUser.uid,
-                courseInstance: course.cid
-            })
-            .then(docRef => {
-                console.log("Document written with ID: ", docRef.id);
-                this.props.history.push({
-                    pathname: '/timeline/'+ course.cid
-                });
-            })
+        if (Enroll(this.props.authUser.uid, course.cid, this.props.firebase)){
+            this.props.history.push({
+                pathname: '/timeline/'+ course.cid
+            });
+        }
     }
 
     render() {
-        const {courses, loading} = this.state;
+        const {courses, myCourses, loading} = this.state;
 
         return (
             <div>
@@ -73,10 +90,10 @@ class CoursesPage extends Component {
                 {loading && <div>Loading ...</div>}
 
                 <h2>My Courses</h2>
-                <CoursesList courses={courses} fun={myCourses}  button={false} enroll={this.enroll}/>
+                <CoursesList courses={myCourses} fun={()=>true}  button={false} enroll={this.enroll}/>
 
                 <h2>Active Courses</h2>
-                <CoursesList courses={courses} fun={activeCourses} button={true} enroll={this.enroll} firebase={this.props.firebase}/>
+                <CoursesList courses={courses} fun={activeCourses} button={true} enroll={this.enroll}/>
 
                 <h2>Archived Courses</h2>
                 <CoursesList courses={courses} fun={archivedCourses} button={false} enroll={this.enroll}/>
@@ -84,10 +101,6 @@ class CoursesPage extends Component {
         );
     }
 
-};
-
-function myCourses() {
-    return true;
 }
 
 function activeCourses(year) {
@@ -100,28 +113,30 @@ function archivedCourses(year) {
 
 const CoursesList = ({ courses, fun, button, enroll }) => (
     <CourseContext.Consumer>
-        {({course, setCourse}) => (
-    <ul>
+    {({course, setCourse}) => (
+        <ul>
         {courses.filter(courses => (fun(courses.year))).map(course => (
-           <Link to={'/timeline/'+course.cid}>
             <li key={course.cid} onClick={() => setCourse(course)}>
-                <span>
+                <Link to={'/timeline/'+course.cid}>
+                    <span>
                   <strong> Name:</strong> {course.name}
                 </span>
-                <span>
+                    <span>
                   <strong> About:</strong> {course.about}
                 </span>
-                <span>
+                    <span>
                   <strong> Abbr:</strong> {course.abbreviation}
                 </span>
-                <span>
+                    <span>
                   <strong> Year:</strong> {course.year}
                 </span>
-                {button && <button onClick={() => {enroll(course)}}>Enroll</button>}
+                    {button && <button onClick={() => {
+                        enroll(course)
+                    }}>Enroll</button>}
+                </Link>
             </li>
-            </Link>
         ))}
-    </ul>
+        </ul>
         )}
     </CourseContext.Consumer>
 );

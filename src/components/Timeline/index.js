@@ -2,6 +2,7 @@ import withAuthorization from "../Session/withAuthorization";
 import {Component} from "react";
 import React from "react";
 import EventsList from "../Events"
+import { isEnrolledIn } from "../Enrollments";
 
 class Timeline extends Component {
     constructor(props) {
@@ -30,7 +31,6 @@ class Timeline extends Component {
                         courseInstance,
                     });
 
-                    console.log(this);
                     this.props.firebase.course(this.state.courseInstance.instanceOf)
                         .get()
                         .then(snapshot => {
@@ -39,7 +39,7 @@ class Timeline extends Component {
                             this.setState({
                                 name: course.name,
                             });
-                        })
+                        });
 
                     this.props.firebase
                         .courseEvents()
@@ -50,7 +50,6 @@ class Timeline extends Component {
 
                             snapshot.forEach(doc =>
                                     events.push({...doc.data(), timestamp: doc.data().dateTime.toDate(), eid: doc.id}),
-                                // console.log(doc.data().dateTime.toDate())
                             );
 
                             this.setState({
@@ -71,10 +70,10 @@ class Timeline extends Component {
             </div>
         );
     }
-};
+}
 
 const condition = authUser => !!authUser;
 
-//TODO condition + only enrolled user
+// const condition = ({authUser, course}) => authUser && isEnrolledIn(authUser.uid, course.cid);
 
 export default withAuthorization(condition)(Timeline);
