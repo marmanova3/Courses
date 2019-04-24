@@ -6,9 +6,22 @@ import { AuthUserContext } from '../Session';
 import { CourseContext } from '../Session';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
+import {
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem,
+    NavLink } from 'reactstrap';
+import style from './style.css';
 
 const Navigation = () => (
-    <AuthUserContext.Consumer>
+    <Navbar class="navbar" expand="md">
+        <NavbarBrand class="navbrand" href="/">Matfyz</NavbarBrand>
+        <NavbarToggler />
+        {/*onClick={this.toggle} />*/}
+
+        <AuthUserContext.Consumer>
         {authUser => authUser ? (
            <CourseContext.Consumer>
                {({course, setCourse}) => course ? (
@@ -21,61 +34,106 @@ const Navigation = () => (
             <NavigationNonAuth />
         )}
     </AuthUserContext.Consumer>
+    </Navbar>
 );
 
 const NavigationAuth = ({ authUser }) => (
-    <ul>
-        {/*<li>*/}
-            {/*<Link to={ROUTES.LANDING}>Landing</Link>*/}
-        {/*</li>*/}
-        <li>
-            <Link to={ROUTES.COURSES}>Courses</Link>
-        </li>
+    <Nav>
+        <NavItem>
+            <NavLink>
+                <Link to={ROUTES.COURSES}>Courses</Link>
+            </NavLink>
+        </NavItem>
         {authUser.roles.includes(ROLES.ADMIN) && (
-            <li>
-                <Link to={ROUTES.ADMIN}>Admin</Link>
-            </li>
+            <NavItem>
+                <NavLink>
+                    <Link to={ROUTES.ADMIN}>Admin</Link>
+                </NavLink>
+            </NavItem>
         )}
-        <li>
-            <Link to={ROUTES.ACCOUNT}>Account</Link>
-        </li>
-        <li>
-            <SignOutButton />
-        </li>
-    </ul>
+        <NavItem>
+            <NavLink>
+                <Link to={ROUTES.ACCOUNT}>Account</Link>
+            </NavLink>
+        </NavItem>
+        <NavItem>
+            <NavLink>
+                <SignOutButton />
+            </NavLink>
+        </NavItem>
+    </Nav>
 );
 
 const NavigationNonAuth = () => (
-    <ul>
-        <li>
-            <Link to={ROUTES.LANDING}>Landing</Link>
-        </li>
-        <li>
-            <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-        </li>
-    </ul>
+    <Nav>
+        <NavItem>
+            <NavLink>
+                <Link to={ROUTES.LANDING}>Landing</Link>
+            </NavLink>
+        </NavItem>
+        <NavItem>
+            <NavLink>
+                <Link to={ROUTES.SIGN_IN}>Sign In</Link>
+            </NavLink>
+        </NavItem>
+    </Nav>
 );
 
 const NavigationCourse = ({ authUser, course, setCourse }) => (
-  <ul>
-      <li onClick={() => setCourse(null)}>
-          <Link to={ROUTES.COURSES}>Back to Courses</Link>
-      </li>
-      <li>
-          <Link to={'/timeline/'+course.cid}>Timeline</Link>
-      </li>
+  <Nav>
+      <NavItem onClick={() => setCourse(null)}>
+          <NavLink>
+            <Link to={ROUTES.COURSES}>Back to Courses</Link>
+          </NavLink>
+      </NavItem>
+      <NavItem>
+          <NavLink>
+            <Link to={'/timeline/'+course.cid}>Timeline</Link>
+          </NavLink>
+      </NavItem>
       { course.hasInstructor === authUser.uid && (
-      <li>
-          <Link to={ROUTES.CREATE_TIMELINE}>Create Timeline</Link>
-      </li>
+      <NavItem>
+          <NavLink>
+            <Link to={ROUTES.CREATE_TIMELINE}>Create Timeline</Link>
+          </NavLink>
+      </NavItem>
       )}
-      <li>Topics</li>
-      <li>Results</li>
-      <li>Assignments</li>
-      <li>Documents</li>
-      <li>Quiz</li>
-      <li>Info</li>
-  </ul>
+      <NavItem>
+          <NavLink>
+            Topics
+          </NavLink>
+      </NavItem>
+      <NavItem>
+          <NavLink>
+              Results
+          </NavLink>
+      </NavItem>
+      <NavItem>
+          <NavLink>
+              Assignments
+          </NavLink>
+      </NavItem>
+      <NavItem>
+          <NavLink>
+              Documents
+          </NavLink>
+      </NavItem>
+      <NavItem>
+          <NavLink>
+              Quiz
+          </NavLink>
+      </NavItem>
+      <NavItem>
+          <NavLink>
+              Info
+          </NavLink>
+      </NavItem>
+      <NavItem>
+          <NavLink>
+              <SignOutButton />
+          </NavLink>
+      </NavItem>
+  </Nav>
 );
 
 export default Navigation;

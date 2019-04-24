@@ -2,17 +2,30 @@ import React, {Component} from 'react';
 import {CourseContext, withAuthorization} from '../Session';
 import {Link} from "react-router-dom";
 import {Enroll} from "../Enrollments";
+import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
+import { ListGroup, ListGroupItem } from 'reactstrap';
+import classnames from 'classnames';
 
 class CoursesPage extends Component {
     constructor(props) {
         super(props);
         this.enroll = this.enroll.bind(this);
+        this.toggle = this.toggle.bind(this);
 
         this.state = {
+            activeTab: '1',
             loading: false,
             courses: [],
             myCourses: [],
         };
+    }
+
+    toggle(tab) {
+        if (this.state.activeTab !== tab) {
+            this.setState({
+                activeTab: tab
+            });
+        }
     }
 
     componentDidMount() {
@@ -89,14 +102,43 @@ class CoursesPage extends Component {
 
                 {loading && <div>Loading ...</div>}
 
-                <h2>My Courses</h2>
-                <CoursesList courses={myCourses} fun={()=>true}  button={false} enroll={this.enroll}/>
-
-                <h2>Active Courses</h2>
-                <CoursesList courses={courses} fun={activeCourses} button={true} enroll={this.enroll}/>
-
-                <h2>Archived Courses</h2>
-                <CoursesList courses={courses} fun={archivedCourses} button={false} enroll={this.enroll}/>
+                <Nav tabs>
+                    <NavItem>
+                        <NavLink
+                            className={classnames({ active: this.state.activeTab === '1' })}
+                            onClick={() => { this.toggle('1'); }}
+                        >
+                            My Courses
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                            className={classnames({ active: this.state.activeTab === '2' })}
+                            onClick={() => { this.toggle('2'); }}
+                        >
+                            Active Courses
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                            className={classnames({ active: this.state.activeTab === '3' })}
+                            onClick={() => { this.toggle('3'); }}
+                        >
+                            Archived Courses
+                        </NavLink>
+                    </NavItem>
+                </Nav>
+                <TabContent activeTab={this.state.activeTab}>
+                    <TabPane tabId="1">
+                        <CoursesList courses={myCourses} fun={()=>true}  button={false} enroll={this.enroll}/>
+                    </TabPane>
+                    <TabPane tabId="2">
+                        <CoursesList courses={courses} fun={activeCourses} button={true} enroll={this.enroll}/>
+                    </TabPane>
+                    <TabPane tabId="3">
+                        <CoursesList courses={courses} fun={archivedCourses} button={false} enroll={this.enroll}/>
+                    </TabPane>
+                </TabContent>
             </div>
         );
     }
@@ -114,9 +156,9 @@ function archivedCourses(year) {
 const CoursesList = ({ courses, fun, button, enroll }) => (
     <CourseContext.Consumer>
     {({course, setCourse}) => (
-        <ul>
+        <ListGroup>
         {courses.filter(courses => (fun(courses.year))).map(course => (
-            <li key={course.cid} onClick={() => setCourse(course)}>
+            <ListGroupItem key={course.cid} onClick={() => setCourse(course)}>
                 <Link to={'/timeline/'+course.cid}>
                     <span>
                   <strong> Name:</strong> {course.name}
@@ -134,9 +176,9 @@ const CoursesList = ({ courses, fun, button, enroll }) => (
                         enroll(course)
                     }}>Enroll</button>}
                 </Link>
-            </li>
+            </ListGroupItem>
         ))}
-        </ul>
+        </ListGroup>
         )}
     </CourseContext.Consumer>
 );

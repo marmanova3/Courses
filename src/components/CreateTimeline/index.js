@@ -4,11 +4,14 @@ import withAuthorization from "../Session/withAuthorization";
 import { withRouter } from 'react-router-dom';
 import * as ROUTES from "../../constants/routes";
 import {compose} from "recompose";
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 const CreateTimeline = () => (
     <div>
         <h1>Create Timeline</h1>
-        <CreateTimelineForm />
+        <div class="main">
+            <CreateTimelineForm />
+        </div>
     </div>
 );
 
@@ -90,66 +93,86 @@ class CreateBlockForm extends Component {
             location === '';
 
         return(
-            <form onSubmit={this.onSubmit}>
-                <input
-                    name="name"
-                    value={name}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Name"
-                /><br></br>
-                <input
-                    name="about"
-                    value={about}
-                    onChange={this.onChange}
-                    type="textarea"
-                    placeholder="About"
-                /><br></br>
-                <input
-                    name="location"
-                    value={location}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Location"
-                /><br></br>
-                <input
-                    name="fromDate"
-                    value={fromDate}
-                    onChange={this.onChange}
-                    type="date"
-                    placeholder="From Date"
-                /><br></br>
-                <input
-                    name="fromTime"
-                    value={fromTime}
-                    onChange={this.onChange}
-                    type="time"
-                    placeholder="From Time"
-                /><br></br>
-                <input
-                    name="toDate"
-                    value={toDate}
-                    onChange={this.onChange}
-                    type="date"
-                    min={Date.now()}
-                    placeholder="To Date"
-                /><br></br>
-                <input
-                    name="toTime"
-                    value={toTime}
-                    onChange={this.onChange}
-                    type="time"
-                    placeholder="To Time"
-                /><br></br>
-                <select name="type" value={type} onChange={this.onChange}>
-                    <option value="session">Session</option>
-                    <option value="task">Task</option>
-                    <option value="block">Block</option>
-                </select>
-                <button disabled={isInvalid} type="submit">
+            <Form onSubmit={this.onSubmit}>
+                <FormGroup>
+                    <Label for="name">Name</Label>
+                    <Input
+                        name="name"
+                        id="name"
+                        value={name}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Name"
+                    />
+                    <Label for="about">About</Label>
+                    <Input
+                        name="about"
+                        id="about"
+                        value={about}
+                        onChange={this.onChange}
+                        type="textarea"
+                        placeholder="About"
+                    />
+                    <Label for="location">Location</Label>
+                    <Input
+                        name="location"
+                        id="location"
+                        value={location}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Location"
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <Label for="fromDate">From date</Label>
+                    <Input
+                        name="fromDate"
+                        id="fromDate"
+                        value={fromDate}
+                        onChange={this.onChange}
+                        type="date"
+                        placeholder="From Date"
+                    />
+                    <Label for="fromTime">From time</Label>
+                    <Input
+                        name="fromTime"
+                        id="fromTime"
+                        value={fromTime}
+                        onChange={this.onChange}
+                        type="time"
+                        placeholder="From Time"
+                    />
+                    <Label for="toDate">To date</Label>
+                    <Input
+                        name="toDate"
+                        id="toDate"
+                        value={toDate}
+                        onChange={this.onChange}
+                        type="date"
+                        min={Date.now()}
+                        placeholder="To Date"
+                    />
+                    <Label for="toTime">To time</Label>
+                    <Input
+                        name="toTime"
+                        id="toTime"
+                        value={toTime}
+                        onChange={this.onChange}
+                        type="time"
+                        placeholder="To Time"
+                    />
+                    <Label for="type">Type</Label>
+                    <Input id="type" type="select" name="type" value={type} onChange={this.onChange}>
+                        <option value="session">Session</option>
+                        <option value="task">Task</option>
+                        <option value="block">Block</option>
+                    </Input>
+                </FormGroup>
+
+                <Button disabled={isInvalid} type="submit">
                     Sign Up
-                </button>
-            </form>
+                </Button>
+            </Form>
         )
     }
 }

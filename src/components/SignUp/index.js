@@ -4,7 +4,7 @@ import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 
 import * as ROUTES from '../../constants/routes';
-// import * as ROLES from '../../constants/roles';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 const SignUpPage = () => (
     <div>
@@ -94,49 +94,69 @@ class SignUpFormBase extends Component {
             surname === '';
 
         return (
-            <form onSubmit={this.onSubmit}>
-                <input
-                    name="username"
-                    value={username}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Username"
-                /><br></br>
-                <input
-                    name="name"
-                    value={name}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Name"
-                /><br></br>
-                <input
-                    name="surname"
-                    value={surname}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Surname"
-                /><br></br>
-                <input
-                    name="email"
-                    value={email}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Email Address"
-                /><br></br>
-                <input
-                    name="passwordOne"
-                    value={passwordOne}
-                    onChange={this.onChange}
-                    type="password"
-                    placeholder="Password"
-                /><br></br>
-                <input
-                    name="passwordTwo"
-                    value={passwordTwo}
-                    onChange={this.onChange}
-                    type="password"
-                    placeholder="Confirm Password"
-                /><br></br>
+            <Form onSubmit={this.onSubmit}>
+                <FormGroup>
+                    <Label for="username">Nick</Label>
+                    <Input
+                        name="username"
+                        id="username"
+                        value={username}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Username"
+                    />
+                    <Label for="email">Email</Label>
+                    <Input
+                        name="email"
+                        id="email"
+                        value={email}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Email Address"
+                    />
+                </FormGroup>
+
+                <FormGroup>
+                    <Label for="name">Name</Label>
+                    <Input
+                        name="name"
+                        id="name"
+                        value={name}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Name"
+                    />
+                    <Label for="surname">Surname</Label>
+                    <Input
+                        name="surname"
+                        id="surname"
+                        value={surname}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Surname"
+                    />
+                </FormGroup>
+
+                <FormGroup>
+                    <Label for="passwordOne">Password</Label>
+                    <Input
+                        name="passwordOne"
+                        id="passwordOne"
+                        value={passwordOne}
+                        onChange={this.onChange}
+                        type="password"
+                        placeholder="Password"
+                    />
+                    <Label for="passwordTwo">Password verification</Label>
+                    <Input
+                        name="passwordTwo"
+                        id="passwordTwo"
+                        value={passwordTwo}
+                        onChange={this.onChange}
+                        type="password"
+                        placeholder="Confirm Password"
+                    />
+                </FormGroup>
                 {/*<label>*/}
                     {/*Admin:*/}
                     {/*<input*/}
@@ -146,12 +166,12 @@ class SignUpFormBase extends Component {
                         {/*onChange={this.onChangeCheckbox}*/}
                     {/*/>*/}
                 {/*</label>*/}
-                <button disabled={isInvalid} type="submit">
+                <Button disabled={isInvalid} type="submit">
                     Sign Up
-                </button>
+                </Button>
 
                 {error && <p>{error.message}</p>}
-            </form>
+            </Form>
         );
     }
 }

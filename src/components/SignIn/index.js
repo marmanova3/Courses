@@ -5,6 +5,7 @@ import { SignUpLink } from '../SignUp';
 import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 const SignInPage = () => (
     <div>
@@ -55,27 +56,33 @@ class SignInFormBase extends Component {
         const isInvalid = password === '' || email === '';
 
         return (
-            <form onSubmit={this.onSubmit}>
-                <input
-                    name="email"
-                    value={email}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Email Address"
-                />
-                <input
-                    name="password"
-                    value={password}
-                    onChange={this.onChange}
-                    type="password"
-                    placeholder="Password"
-                />
-                <button disabled={isInvalid} type="submit">
+            <Form onSubmit={this.onSubmit}>
+                <FormGroup>
+                    <Label for="email">Email</Label>
+                    <Input
+                        name="email"
+                        id="email"
+                        value={email}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Email Address"
+                    />
+                    <Label for="password">Password</Label>
+                    <Input
+                        name="password"
+                        id="password"
+                        value={password}
+                        onChange={this.onChange}
+                        type="password"
+                        placeholder="Password"
+                    />
+                </FormGroup>
+                <Button disabled={isInvalid} type="submit">
                     Sign In
-                </button>
+                </Button>
 
                 {error && <p>{error.message}</p>}
-            </form>
+            </Form>
         );
     }
 }
