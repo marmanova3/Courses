@@ -1,0 +1,38 @@
+body {
+    background-color: #F3F3F3;
+}
+
+.courses {
+    min-width: 900px;
+    display: flex;
+    flex-direction: column;
+    /*align-items: center;*/
+}
+
+.tab {
+    color: #1D661D;
+    min-width: 900px;
+}
+
+a.active.nav-link .tab {
+    color: #133F2A;
+}
+
+.list-group-item a {
+    color: black;
+}
+
+.name {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.enroll-button {
+    background-color: #1D661D;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}

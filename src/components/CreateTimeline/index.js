@@ -5,13 +5,19 @@ import { withRouter } from 'react-router-dom';
 import * as ROUTES from "../../constants/routes";
 import {compose} from "recompose";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import {NavigationCourse} from "../Navigation";
 
 const CreateTimeline = () => (
     <div>
-        <h1>Create Timeline</h1>
-        <div class="main">
-            <CreateTimelineForm />
-        </div>
+        <NavigationCourse />
+        <main>
+            <div>
+                <h1>Create Timeline</h1>
+                <div class="main">
+                    <CreateTimelineForm />
+                </div>
+            </div>
+        </main>
     </div>
 );
 

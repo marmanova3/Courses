@@ -5,6 +5,8 @@ import {Enroll} from "../Enrollments";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import classnames from 'classnames';
+import style from './style.css';
+import Navigation from "../Navigation";
 
 class CoursesPage extends Component {
     constructor(props) {
@@ -98,47 +100,53 @@ class CoursesPage extends Component {
 
         return (
             <div>
-                <h1>Welcome to Courses</h1>
+                <Navigation />
+                <main>
+                <div className="courses">
 
-                {loading && <div>Loading ...</div>}
+                    <h1>Welcome to Courses</h1>
 
-                <Nav tabs>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({ active: this.state.activeTab === '1' })}
-                            onClick={() => { this.toggle('1'); }}
-                        >
-                            My Courses
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({ active: this.state.activeTab === '2' })}
-                            onClick={() => { this.toggle('2'); }}
-                        >
-                            Active Courses
-                        </NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink
-                            className={classnames({ active: this.state.activeTab === '3' })}
-                            onClick={() => { this.toggle('3'); }}
-                        >
-                            Archived Courses
-                        </NavLink>
-                    </NavItem>
-                </Nav>
-                <TabContent activeTab={this.state.activeTab}>
-                    <TabPane tabId="1">
-                        <CoursesList courses={myCourses} fun={()=>true}  button={false} enroll={this.enroll}/>
-                    </TabPane>
-                    <TabPane tabId="2">
-                        <CoursesList courses={courses} fun={activeCourses} button={true} enroll={this.enroll}/>
-                    </TabPane>
-                    <TabPane tabId="3">
-                        <CoursesList courses={courses} fun={archivedCourses} button={false} enroll={this.enroll}/>
-                    </TabPane>
-                </TabContent>
+                    {loading && <div>Loading ...</div>}
+
+                    <Nav tabs>
+                        <NavItem>
+                            <NavLink
+                                className={classnames({ active: this.state.activeTab === '1' })}
+                                onClick={() => { this.toggle('1'); }}
+                            >
+                                <span className="tab">My Courses</span>
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                className={classnames({ active: this.state.activeTab === '2' })}
+                                onClick={() => { this.toggle('2'); }}
+                            >
+                                <span className="tab">Active Courses</span>
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
+                                className={classnames({ active: this.state.activeTab === '3' })}
+                                onClick={() => { this.toggle('3'); }}
+                            >
+                                <span className="tab">Archived Courses</span>
+                            </NavLink>
+                        </NavItem>
+                    </Nav>
+                    <TabContent activeTab={this.state.activeTab}>
+                        <TabPane tabId="1">
+                            <CoursesList courses={myCourses} fun={()=>true}  button={false} enroll={this.enroll}/>
+                        </TabPane>
+                        <TabPane tabId="2">
+                            <CoursesList courses={courses} fun={activeCourses} button={true} enroll={this.enroll}/>
+                        </TabPane>
+                        <TabPane tabId="3">
+                            <CoursesList courses={courses} fun={archivedCourses} button={false} enroll={this.enroll}/>
+                        </TabPane>
+                    </TabContent>
+                </div>
+                </main>
             </div>
         );
     }
@@ -160,19 +168,10 @@ const CoursesList = ({ courses, fun, button, enroll }) => (
         {courses.filter(courses => (fun(courses.year))).map(course => (
             <ListGroupItem key={course.cid} onClick={() => setCourse(course)}>
                 <Link to={'/timeline/'+course.cid}>
-                    <span>
-                  <strong> Name:</strong> {course.name}
-                </span>
-                    <span>
-                  <strong> About:</strong> {course.about}
-                </span>
-                    <span>
-                  <strong> Abbr:</strong> {course.abbreviation}
-                </span>
-                    <span>
-                  <strong> Year:</strong> {course.year}
-                </span>
-                    {button && <button onClick={() => {
+                    <span className="name">{course.name}</span>
+                    <br></br>
+                    <span className="about">{course.about}</span>
+                    {button && <button className="enroll-button" onClick={() => {
                         enroll(course)
                     }}>Enroll</button>}
                 </Link>

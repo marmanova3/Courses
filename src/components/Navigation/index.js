@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import SignOutButton from '../SignOut';
 
 import { AuthUserContext } from '../Session';
-import { CourseContext } from '../Session';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 import {
@@ -17,19 +16,12 @@ import style from './style.css';
 
 const Navigation = () => (
     <Navbar class="navbar" expand="md">
-        <NavbarBrand class="navbrand" href="/">Matfyz</NavbarBrand>
+        <NavbarBrand href="/">Matfyz</NavbarBrand>
         <NavbarToggler />
         {/*onClick={this.toggle} />*/}
-
         <AuthUserContext.Consumer>
         {authUser => authUser ? (
-           <CourseContext.Consumer>
-               {({course, setCourse}) => course ? (
-                   <NavigationCourse authUser={authUser} course={course} setCourse={setCourse}/>
-                ) : (
-                   <NavigationAuth authUser={authUser} />
-                )}
-            </CourseContext.Consumer>
+            <NavigationAuth authUser={authUser} />
         ) : (
             <NavigationNonAuth />
         )}
@@ -79,61 +71,64 @@ const NavigationNonAuth = () => (
     </Nav>
 );
 
-const NavigationCourse = ({ authUser, course, setCourse }) => (
-  <Nav>
-      <NavItem onClick={() => setCourse(null)}>
-          <NavLink>
-            <Link to={ROUTES.COURSES}>Back to Courses</Link>
-          </NavLink>
-      </NavItem>
-      <NavItem>
-          <NavLink>
-            <Link to={'/timeline/'+course.cid}>Timeline</Link>
-          </NavLink>
-      </NavItem>
-      { course.hasInstructor === authUser.uid && (
-      <NavItem>
-          <NavLink>
-            <Link to={ROUTES.CREATE_TIMELINE}>Create Timeline</Link>
-          </NavLink>
-      </NavItem>
-      )}
-      <NavItem>
-          <NavLink>
-            Topics
-          </NavLink>
-      </NavItem>
-      <NavItem>
-          <NavLink>
-              Results
-          </NavLink>
-      </NavItem>
-      <NavItem>
-          <NavLink>
-              Assignments
-          </NavLink>
-      </NavItem>
-      <NavItem>
-          <NavLink>
-              Documents
-          </NavLink>
-      </NavItem>
-      <NavItem>
-          <NavLink>
-              Quiz
-          </NavLink>
-      </NavItem>
-      <NavItem>
-          <NavLink>
-              Info
-          </NavLink>
-      </NavItem>
-      <NavItem>
-          <NavLink>
-              <SignOutButton />
-          </NavLink>
-      </NavItem>
-  </Nav>
+const NavigationCourse = ({ authUser, course }) => (
+    <Navbar class="navbar" expand="md">
+        <NavbarBrand href="/">Matfyz</NavbarBrand>
+        <NavbarToggler />
+        <Nav>
+            {course &&
+            <NavItem>
+                <NavLink>
+                    <Link to={'/timeline/' + course.cid}>Timeline</Link>
+                </NavLink>
+            </NavItem>
+            }
+            {course && course.hasInstructor === authUser.uid &&
+                <NavItem>
+                  <NavLink>
+                    <Link to={ROUTES.CREATE_TIMELINE}>Create Timeline</Link>
+                  </NavLink>
+                </NavItem>
+            }
+            <NavItem>
+              <NavLink>
+                  <span className="fake-nav">Topics</span>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink>
+                  <span className="fake-nav">Results</span>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink>
+                  <span className="fake-nav">Assignments</span>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink>
+                  <span className="fake-nav">Documents</span>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink>
+                  <span className="fake-nav">Quiz</span>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink>
+                  <span className="fake-nav">Info</span>
+              </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink>
+                  <SignOutButton />
+              </NavLink>
+            </NavItem>
+        </Nav>
+    </Navbar>
 );
 
 export default Navigation;
+
+export { NavigationCourse };

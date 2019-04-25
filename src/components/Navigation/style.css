@@ -1,7 +1,19 @@
 .navbar {
     background-color: #133F2A;
+    padding: 0;
 }
 
-.navbrand  {
-    color: yellow;
+.navbar-brand  {
+    background-color: #1D661D;
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.nav-link a, .fake-nav{
+    color: white;
+    font-weight: bold;
+}
+
+button {
 }

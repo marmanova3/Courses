@@ -5,11 +5,17 @@ import { compose } from 'recompose';
 
 import * as ROUTES from '../../constants/routes';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import Navigation from "../Navigation";
 
 const SignUpPage = () => (
     <div>
-        <h1>SignUp</h1>
-        <SignUpForm />
+        <Navigation />
+        <main>
+            <div>
+                <h1>Registration</h1>
+                <SignUpForm />
+            </div>
+        </main>
     </div>
 );
 

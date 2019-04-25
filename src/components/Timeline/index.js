@@ -3,6 +3,7 @@ import {Component} from "react";
 import React from "react";
 import EventsList from "../Events"
 import { isEnrolledIn } from "../Enrollments";
+import {NavigationCourse} from "../Navigation";
 
 class Timeline extends Component {
     constructor(props) {
@@ -24,12 +25,14 @@ class Timeline extends Component {
         this.props.firebase.courseInstance(params.id)
             .get()
             .then(snapshot => {
-                const courseInstance = snapshot.data();
+                const courseInstance = { ...snapshot.data(), cid: snapshot.id };
 
                 if(courseInstance) {
                     this.setState({
-                        courseInstance,
+                        courseInstance: courseInstance,
                     });
+                    console.log(this.state.courseInstance)
+
 
                     this.props.firebase.course(this.state.courseInstance.instanceOf)
                         .get()
@@ -64,9 +67,14 @@ class Timeline extends Component {
     render() {
         return (
             <div>
-                <h1>Timeline</h1>
-                <h2>{this.state.name}</h2>
-                <EventsList courseEvents={this.state.events}/>
+                <NavigationCourse authUser={this.props.authUser} course={this.state.courseInstance} />
+                <main>
+                    <div>
+                        <h1>Timeline</h1>
+                        <h2>{this.state.name}</h2>
+                        <EventsList courseEvents={this.state.events}/>
+                    </div>
+                </main>
             </div>
         );
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { withFirebase } from '../Firebase';
-import { Button, Form, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 
 const INITIAL_STATE = {
@@ -44,22 +44,24 @@ class PasswordChangeForm extends Component {
 
         return (
             <Form onSubmit={this.onSubmit}>
-                <Label for="passwordOne">Password</Label>
-                <Input
-                    name="passwordOne"
-                    value={passwordOne}
-                    onChange={this.onChange}
-                    type="password"
-                    placeholder="New Password"
-                />
-                <Label for="passwordTwo">Password verification</Label>
-                <Input
-                    name="passwordTwo"
-                    value={passwordTwo}
-                    onChange={this.onChange}
-                    type="password"
-                    placeholder="Confirm New Password"
-                />
+                <FormGroup>
+                    <Label for="passwordOne">Password</Label>
+                    <Input
+                        name="passwordOne"
+                        value={passwordOne}
+                        onChange={this.onChange}
+                        type="password"
+                        placeholder="New Password"
+                    />
+                    <Label for="passwordTwo">Password verification</Label>
+                    <Input
+                        name="passwordTwo"
+                        value={passwordTwo}
+                        onChange={this.onChange}
+                        type="password"
+                        placeholder="Confirm New Password"
+                    />
+                </FormGroup>
                 <Button disabled={isInvalid} type="submit">
                     Reset My Password
                 </Button>

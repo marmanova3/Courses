@@ -11,7 +11,8 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "reactstrap": "^8.0.0",
-    "recompose": "^0.30.0"
+    "recompose": "^0.30.0",
+    "classnames": "latest"
   },
   "scripts": {
     "start": "react-scripts start",

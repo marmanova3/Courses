@@ -6,13 +6,20 @@ import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import style from './style.css';
+import Navigation from "../Navigation";
 
 const SignInPage = () => (
     <div>
-        <h1>SignIn</h1>
-        <SignInForm />
-        <PasswordForgetLink />
-        <SignUpLink />
+        <Navigation />
+        <main>
+            <div className="sign-in-div">
+                <h1>Sign In</h1>
+                <SignInForm />
+                <PasswordForgetLink/>
+                <SignUpLink />
+            </div>
+        </main>
     </div>
 );
 
