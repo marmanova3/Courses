@@ -1,0 +1,40 @@
+.list-group-item:first-child, .list-group-item:last-child {
+    border-radius: 0;
+}
+
+h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.block-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    padding: 20px;
+}
+
+.name, .about {
+    text-align: center;
+}
+
+.block-menu-item {
+    background-color: #1D661D;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 2px;
+
+    border: none;
+    height: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.timeline {
+    background-color: #C8C8C8;
+    color: black;
+    font-weight: bold;
+    justify-content: center;
+}

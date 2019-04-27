@@ -126,7 +126,7 @@ class CreateBlockForm extends Component {
             .then(docRef => {
                 console.log("Document written with ID: ", docRef.id);
                 this.setState({ ...INITIAL_STATE });
-                this.props.history.push(ROUTES.CREATE_TIMELINE);
+                this.props.history.push(ROUTES.TIMELINE);
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
@@ -232,14 +232,14 @@ class CreateBlockForm extends Component {
                     />
                     <Label for="type">Type</Label>
                     <Input id="type" type="select" name="type" value={type} onChange={this.onChange}>
-                        <option value="session">Session</option>
-                        <option value="task">Task</option>
-                        <option value="block">Block</option>
+                        <option value="Session">Session</option>
+                        <option value="Task">Task</option>
+                        <option value="Block">Block</option>
                     </Input>
                 </FormGroup>
 
                 <Button disabled={isInvalid} type="submit">
-                    Sign Up
+                    Create
                 </Button>
             </Form>
         )

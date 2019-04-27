@@ -1,3 +1,7 @@
+.courses_main {
+    justify-content: center;
+}
+
 .courses {
     min-width: 900px;
     display: flex;

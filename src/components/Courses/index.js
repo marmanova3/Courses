@@ -101,7 +101,7 @@ class CoursesPage extends Component {
         return (
             <div>
                 <Navigation />
-                <main>
+                <main className="courses_main">
                 <div className="courses">
 
                     <h1>Welcome to Courses</h1>
@@ -154,7 +154,7 @@ class CoursesPage extends Component {
 }
 
 function activeCourses(year) {
-    return year === 2019;
+    return year == 2019;
 }
 
 function archivedCourses(year) {

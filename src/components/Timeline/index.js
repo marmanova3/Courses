@@ -3,7 +3,7 @@ import {Component} from "react";
 import React from "react";
 import EventsList, {BlockMenu} from "../Events"
 import { Container, Row, Col } from 'reactstrap';
-
+import './Timeline.css';
 import {NavigationCourse} from "../Navigation";
 
 class Timeline extends Component {
@@ -14,7 +14,7 @@ class Timeline extends Component {
             loading: true,
             events: [],
             courseInstance: undefined,
-            course: undefined,
+            course: "",
         };
     }
 
@@ -58,8 +58,6 @@ class Timeline extends Component {
                                 loading: false,
                                 events: events,
                             });
-
-
                             // let bool = await isEnrolledIn(this.props.authUser.uid, this.state.courseInstance.cid, this.props.firebase);
                         });
                 }
@@ -71,19 +69,18 @@ class Timeline extends Component {
             <div>
                 <NavigationCourse authUser={this.props.authUser} course={this.state.courseInstance} />
                 <main>
+                    {this.state.events &&
                     <Container>
                         <Row>
-                            <Col xs="1">
-                                <h2>Timeline</h2>
+                            <Col xs="auto">
                                 <BlockMenu courseEvents={this.state.events}/>
                             </Col>
                             <Col>
-                                {this.state.course &&
-                                <h1>{this.state.course.name}</h1>}
-                                <EventsList courseEvents={this.state.events} type={"Lecture"}/>
+                                <EventsList courseEvents={this.state.events}/>
                             </Col>
                         </Row>
                     </Container>
+                    }
                 </main>
             </div>
         );
