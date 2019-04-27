@@ -154,7 +154,7 @@ class CoursesPage extends Component {
 }
 
 function activeCourses(year) {
-    return year == 2019;
+    return year === 2019;
 }
 
 function archivedCourses(year) {

@@ -10,7 +10,25 @@
     padding: 10px;
 }
 
-.nav-link a, .fake-nav{
+.navbar-brand:hover {
+    color: #F4B800;
+}
+
+.nav-link, .fake-nav{
     color: white;
     font-weight: bold;
+    text-decoration: none;
+    height: 50px;
+    justify-content: center;
+}
+
+.nav-button:hover {
+    background-color: #1D661D;
+    color: white;
+}
+
+button {
+    background-color: #1D661D;
+    color: white;
+    border: none;
 }

@@ -5,8 +5,8 @@
 h3 {
     font-size: 18px;
     font-weight: bold;
-    margin-top: 20px;
     text-align: center;
+    margin-top: 5px;
 }
 
 .block-item {
@@ -37,4 +37,15 @@ h3 {
     color: black;
     font-weight: bold;
     justify-content: center;
+}
+
+.sessions, .tasks {
+    margin-top: 10px;
+}
+
+.subevents-item {
+    border: none;
+    height: 20px;
+    display: flex;
+    align-items: center;
 }

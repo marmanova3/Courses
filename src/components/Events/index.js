@@ -22,7 +22,7 @@ const EventsList = ({ courseEvents }) => (
                             <ListGroup className="sessions">
                                 <h3>Sessions</h3>
                                 {courseEvents.filter(event => { return event.type === "Session"; }).map(event => (
-                                    <ListGroupItem>
+                                    <ListGroupItem key={event.eid} className="subevents-item">
                                         <span>{event.name}</span>
                                     </ListGroupItem>
                                     ))}
@@ -32,7 +32,7 @@ const EventsList = ({ courseEvents }) => (
                             <ListGroup className="tasks">
                                 <h3>Tasks</h3>
                                 {courseEvents.filter(event => { return event.type === "Task"; }).map(event => (
-                                    <ListGroupItem>
+                                    <ListGroupItem key={event.eid} className="subevents-item">
                                         <span>{event.name}</span>
                                     </ListGroupItem>
                                 ))}

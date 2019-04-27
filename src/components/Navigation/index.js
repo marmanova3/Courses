@@ -15,7 +15,7 @@ import {
 import './Navigation.css';
 
 const Navigation = () => (
-    <Navbar class="navbar" expand="md">
+    <Navbar className="navbar" expand="md">
         <NavbarBrand href="/">Matfyz</NavbarBrand>
         <NavbarToggler />
         {/*onClick={this.toggle} />*/}
@@ -32,21 +32,15 @@ const Navigation = () => (
 const NavigationAuth = ({ authUser }) => (
     <Nav>
         <NavItem>
-            <NavLink>
-                <Link to={ROUTES.COURSES}>Courses</Link>
-            </NavLink>
+            <Link to={ROUTES.COURSES} className="nav-link nav-button">Courses</Link>
         </NavItem>
         {authUser.roles.includes(ROLES.ADMIN) && (
             <NavItem>
-                <NavLink>
-                    <Link to={ROUTES.ADMIN}>Admin</Link>
-                </NavLink>
+                <Link to={ROUTES.ADMIN} className="nav-link nav-button">Admin</Link>
             </NavItem>
         )}
         <NavItem>
-            <NavLink>
-                <Link to={ROUTES.ACCOUNT}>Account</Link>
-            </NavLink>
+            <Link to={ROUTES.ACCOUNT} className="nav-link nav-button">Account</Link>
         </NavItem>
         <NavItem>
             <NavLink>
@@ -59,35 +53,27 @@ const NavigationAuth = ({ authUser }) => (
 const NavigationNonAuth = () => (
     <Nav>
         <NavItem>
-            <NavLink>
-                <Link to={ROUTES.LANDING}>Landing</Link>
-            </NavLink>
+            <Link to={ROUTES.LANDING}  className="nav-link nav-button">Landing</Link>
         </NavItem>
         <NavItem>
-            <NavLink>
-                <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-            </NavLink>
+            <Link to={ROUTES.SIGN_IN} className="nav-link nav-button">Sign In</Link>
         </NavItem>
     </Nav>
 );
 
 const NavigationCourse = ({ authUser, course }) => (
-    <Navbar class="navbar" expand="md">
+    <Navbar className="navbar" expand="md">
         <NavbarBrand href="/">Matfyz</NavbarBrand>
         <NavbarToggler />
         <Nav>
             {course &&
             <NavItem>
-                <NavLink>
-                    <Link to={ROUTES.TIMELINE + course.cid}>Timeline</Link>
-                </NavLink>
+                <Link to={ROUTES.TIMELINE + course.cid} className="nav-link nav-button">Timeline</Link>
             </NavItem>
             }
             {course && course.hasInstructor === authUser.uid &&
                 <NavItem>
-                  <NavLink>
-                    <Link to={ROUTES.CREATE_TIMELINE + course.cid}>Create Timeline</Link>
-                  </NavLink>
+                    <Link to={ROUTES.CREATE_TIMELINE + course.cid} className="nav-link nav-button">Create Timeline</Link>
                 </NavItem>
             }
             <NavItem>

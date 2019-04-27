@@ -6,7 +6,6 @@ import * as ROUTES from "../../constants/routes";
 import {compose} from "recompose";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import {NavigationCourse} from "../Navigation";
-import EventsList from "../Events";
 
 class CreateTimeline extends Component {
     constructor(props) {
