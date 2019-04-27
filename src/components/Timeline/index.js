@@ -1,8 +1,9 @@
 import withAuthorization from "../Session/withAuthorization";
 import {Component} from "react";
 import React from "react";
-import EventsList from "../Events"
-import { isEnrolledIn } from "../Enrollments";
+import EventsList, {BlockMenu} from "../Events"
+import { Container, Row, Col } from 'reactstrap';
+
 import {NavigationCourse} from "../Navigation";
 
 class Timeline extends Component {
@@ -13,7 +14,7 @@ class Timeline extends Component {
             loading: true,
             events: [],
             courseInstance: undefined,
-            name: "",
+            course: undefined,
         };
     }
 
@@ -31,8 +32,6 @@ class Timeline extends Component {
                     this.setState({
                         courseInstance: courseInstance,
                     });
-                    console.log(this.state.courseInstance)
-
 
                     this.props.firebase.course(this.state.courseInstance.instanceOf)
                         .get()
@@ -40,7 +39,7 @@ class Timeline extends Component {
                             const course = snapshot.data();
 
                             this.setState({
-                                name: course.name,
+                                course: course,
                             });
                         });
 
@@ -48,17 +47,20 @@ class Timeline extends Component {
                         .courseEvents()
                         .where("course", "==", params.id)
                         .get()
-                        .then(snapshot => {
+                        .then(async  snapshot => {
                             let events = [];
 
                             snapshot.forEach(doc =>
-                                    events.push({...doc.data(), timestamp: doc.data().dateTime.toDate(), eid: doc.id}),
+                                    events.push({...doc.data(), timestamp: doc.data().dateTime, eid: doc.id}),
                             );
 
                             this.setState({
                                 loading: false,
                                 events: events,
                             });
+
+
+                            // let bool = await isEnrolledIn(this.props.authUser.uid, this.state.courseInstance.cid, this.props.firebase);
                         });
                 }
             });
@@ -69,11 +71,19 @@ class Timeline extends Component {
             <div>
                 <NavigationCourse authUser={this.props.authUser} course={this.state.courseInstance} />
                 <main>
-                    <div>
-                        <h1>Timeline</h1>
-                        <h2>{this.state.name}</h2>
-                        <EventsList courseEvents={this.state.events}/>
-                    </div>
+                    <Container>
+                        <Row>
+                            <Col xs="1">
+                                <h2>Timeline</h2>
+                                <BlockMenu courseEvents={this.state.events}/>
+                            </Col>
+                            <Col>
+                                {this.state.course &&
+                                <h1>{this.state.course.name}</h1>}
+                                <EventsList courseEvents={this.state.events} type={"Lecture"}/>
+                            </Col>
+                        </Row>
+                    </Container>
                 </main>
             </div>
         );
@@ -82,6 +92,7 @@ class Timeline extends Component {
 
 const condition = authUser => !!authUser;
 
-// const condition = ({authUser, course}) => authUser && isEnrolledIn(authUser.uid, course.cid);
+// const condition = async ({authUser, course}) => authUser && await isEnrolledIn(authUser.uid, course.cid);
+// const condition = async (authUser, course, firebase) => authUser && await isEnrolledIn(authUser.uid, course.cid, firebase);
 
 export default withAuthorization(condition)(Timeline);

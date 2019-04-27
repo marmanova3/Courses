@@ -6,7 +6,7 @@ import { PasswordForgetLink } from '../PasswordForget';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import style from './style.css';
+import './SignIn.css';
 import Navigation from "../Navigation";
 
 const SignInPage = () => (

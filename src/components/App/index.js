@@ -24,8 +24,8 @@ const AppBase = () => (
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
             <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
             <Route path={ROUTES.COURSES} component={CoursesPage} />
-            <Route path={ROUTES.TIMELINE} component={Timeline} />
-            <Route path={ROUTES.CREATE_TIMELINE} component={CreateTimeline} />
+            <Route path={ROUTES.TIMELINE_ID} component={Timeline} />
+            <Route path={ROUTES.CREATE_TIMELINE_ID} component={CreateTimeline} />
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
             <Route path={ROUTES.ADMIN} component={AdminPage} />
         </div>

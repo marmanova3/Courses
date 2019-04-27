@@ -5,7 +5,7 @@ import {Enroll} from "../Enrollments";
 import { TabContent, TabPane, Nav, NavItem, NavLink } from 'reactstrap';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import classnames from 'classnames';
-import style from './style.css';
+import './Courses.css';
 import Navigation from "../Navigation";
 
 class CoursesPage extends Component {

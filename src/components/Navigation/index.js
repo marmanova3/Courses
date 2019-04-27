@@ -12,7 +12,7 @@ import {
     Nav,
     NavItem,
     NavLink } from 'reactstrap';
-import style from './style.css';
+import './Navigation.css';
 
 const Navigation = () => (
     <Navbar class="navbar" expand="md">
@@ -79,14 +79,14 @@ const NavigationCourse = ({ authUser, course }) => (
             {course &&
             <NavItem>
                 <NavLink>
-                    <Link to={'/timeline/' + course.cid}>Timeline</Link>
+                    <Link to={ROUTES.TIMELINE + course.cid}>Timeline</Link>
                 </NavLink>
             </NavItem>
             }
             {course && course.hasInstructor === authUser.uid &&
                 <NavItem>
                   <NavLink>
-                    <Link to={ROUTES.CREATE_TIMELINE}>Create Timeline</Link>
+                    <Link to={ROUTES.CREATE_TIMELINE + course.cid}>Create Timeline</Link>
                   </NavLink>
                 </NavItem>
             }

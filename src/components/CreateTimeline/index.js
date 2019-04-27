@@ -6,21 +6,84 @@ import * as ROUTES from "../../constants/routes";
 import {compose} from "recompose";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import {NavigationCourse} from "../Navigation";
+import EventsList from "../Events";
 
-const CreateTimeline = () => (
-    <div>
-        <NavigationCourse />
-        <main>
+class CreateTimeline extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loading: true,
+            events: [],
+            courseInstance: undefined,
+            name: "",
+        };
+    }
+
+    componentDidMount() {
+        this.setState({ loading: true });
+
+        const { match: { params } } = this.props;
+
+        this.props.firebase.courseInstance(params.id)
+            .get()
+            .then(snapshot => {
+                const courseInstance = { ...snapshot.data(), cid: snapshot.id };
+
+                if(courseInstance) {
+                    this.setState({
+                        courseInstance: courseInstance,
+                    });
+                    console.log(this.state.courseInstance)
+
+
+                    this.props.firebase.course(this.state.courseInstance.instanceOf)
+                        .get()
+                        .then(snapshot => {
+                            const course = snapshot.data();
+
+                            this.setState({
+                                name: course.name,
+                            });
+                        });
+
+                    this.props.firebase
+                        .courseEvents()
+                        .where("course", "==", params.id)
+                        .get()
+                        .then(snapshot => {
+                            let events = [];
+
+                            snapshot.forEach(doc =>
+                                events.push({...doc.data(), timestamp: doc.data().dateTime.toDate(), eid: doc.id}),
+                            );
+
+                            this.setState({
+                                loading: false,
+                                events: events,
+                            });
+                        });
+                }
+            });
+    }
+
+    render() {
+        return (
             <div>
-                <h1>Create Timeline</h1>
-                <div class="main">
-                    <CreateTimelineForm />
-                </div>
+                <NavigationCourse authUser={this.props.authUser} course={this.state.courseInstance}/>
+                <main>
+                    <div>
+                        <h1>Create Timeline</h1>
+                        <div className="main">
+                            <h2>New Event</h2>
+                            <CreateTimelineForm/>
+                        </div>
+                    </div>
+                </main>
             </div>
-        </main>
-    </div>
-);
-
+        );
+    }
+}
 const INITIAL_STATE = {
     name: '',
     about: '',
