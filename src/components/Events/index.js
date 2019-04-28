@@ -3,7 +3,9 @@ import { ListGroup, ListGroupItem } from 'reactstrap';
 import './Events.css';
 import { Container, Row, Col } from 'reactstrap';
 
-const EventsList = ({ courseEvents }) => (
+const EventsList = ({ courseEvents }) => {
+    courseEvents.sort((e1, e2) => new Date(e1.timestamp)-new Date(e2.timestamp));
+    return (
     <ListGroup>
         {courseEvents.filter(event => { return event.type === "Block"; }).map(event => (
             <ListGroupItem key={event.eid}  className="block-item">
@@ -12,16 +14,13 @@ const EventsList = ({ courseEvents }) => (
                 <span>
                   <strong> Date and time:</strong> {event.timestamp.toString()}
                 </span>
-                <span>
-                  <strong> Duration:</strong> {event.duration}
-                </span>
 
                 <Container>
                     <Row>
                         <Col>
                             <ListGroup className="sessions">
                                 <h3>Sessions</h3>
-                                {courseEvents.filter(event => { return event.type === "Session"; }).map(event => (
+                                {courseEvents.filter(e => { return e.type === "Session" && e.dateTime > event.dateTime && e.dateTime < event.toDateTime; }).map(event => (
                                     <ListGroupItem key={event.eid} className="subevents-item">
                                         <span>{event.name}</span>
                                     </ListGroupItem>
@@ -31,7 +30,7 @@ const EventsList = ({ courseEvents }) => (
                         <Col>
                             <ListGroup className="tasks">
                                 <h3>Tasks</h3>
-                                {courseEvents.filter(event => { return event.type === "Task"; }).map(event => (
+                                {courseEvents.filter(e => { return e.type === "Task" && e.dateTime > event.dateTime && e.dateTime < event.toDateTime;  }).map(event => (
                                     <ListGroupItem key={event.eid} className="subevents-item">
                                         <span>{event.name}</span>
                                     </ListGroupItem>
@@ -44,7 +43,7 @@ const EventsList = ({ courseEvents }) => (
             </ListGroupItem>
         ))}
     </ListGroup>
-);
+)};
 
 const BlockMenu = ({ courseEvents }) => (
     <ListGroup className="block-menu">

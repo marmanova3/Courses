@@ -54,7 +54,7 @@ class CreateTimeline extends Component {
                             let events = [];
 
                             snapshot.forEach(doc =>
-                                events.push({...doc.data(), timestamp: doc.data().dateTime.toDate(), eid: doc.id}),
+                                events.push({...doc.data(), timestamp: doc.data().dateTime, eid: doc.id}),
                             );
 
                             this.setState({
@@ -120,7 +120,7 @@ class CreateBlockForm extends Component {
                 location: location,
                 type: type,
                 dateTime: fromDate+" "+fromTime,
-                duration: 60,
+                toDateTime: toDate+" "+toTime,
             })
             .then(docRef => {
                 console.log("Document written with ID: ", docRef.id);
