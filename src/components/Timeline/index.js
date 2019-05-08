@@ -69,7 +69,10 @@ class Timeline extends Component {
             <div>
                 <NavigationCourse authUser={this.props.authUser} course={this.state.courseInstance} />
                 <main>
-                    {this.state.events &&
+                    {this.state.events.length===0 && !this.state.loading &&
+                    <p>Timeline for this course is empty.</p>
+                    }
+                    {this.state.events.length>0 &&
                     <Container>
                         <Row>
                             <Col xs="auto">

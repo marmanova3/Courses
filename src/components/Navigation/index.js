@@ -63,7 +63,7 @@ const NavigationNonAuth = () => (
 
 const NavigationCourse = ({ authUser, course }) => (
     <Navbar className="navbar" expand="md">
-        <NavbarBrand href="/">Matfyz</NavbarBrand>
+        <NavbarBrand href="/courses">Matfyz</NavbarBrand>
         <NavbarToggler />
         <Nav>
             {course &&

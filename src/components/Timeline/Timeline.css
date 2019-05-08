@@ -13,3 +13,7 @@
     padding-left: 0;
     padding-right: 25px;
 }
+
+.col-auto{
+    min-width: 200px;
+}

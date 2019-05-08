@@ -19,6 +19,7 @@ class CoursesPage extends Component {
             loading: false,
             courses: [],
             myCourses: [],
+            otherCourses: [],
         };
     }
 
@@ -79,9 +80,12 @@ class CoursesPage extends Component {
                                     }
                                 })});
 
+                                let otherCourses = this.state.courses.filter(x => !myCourses.map(x => x.cid).includes(x.cid));
+
                                 this.setState({
-                                    myCourses,
-                                })
+                                    myCourses: myCourses,
+                                    otherCourses: otherCourses,
+                                });
                             })
                         )
                     })
@@ -96,7 +100,7 @@ class CoursesPage extends Component {
     }
 
     render() {
-        const {courses, myCourses, loading} = this.state;
+        const {courses, myCourses, otherCourses, loading} = this.state;
 
         return (
             <div>
@@ -139,7 +143,7 @@ class CoursesPage extends Component {
                             <CoursesList courses={myCourses} fun={()=>true}  button={false} enroll={this.enroll}/>
                         </TabPane>
                         <TabPane tabId="2">
-                            <CoursesList courses={courses} fun={activeCourses} button={true} enroll={this.enroll}/>
+                            <CoursesList courses={otherCourses} fun={activeCourses} button={true} enroll={this.enroll}/>
                         </TabPane>
                         <TabPane tabId="3">
                             <CoursesList courses={courses} fun={archivedCourses} button={false} enroll={this.enroll}/>
