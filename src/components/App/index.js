@@ -5,7 +5,6 @@ import LandingPage from '../Landing';
 import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 import PasswordForgetPage from '../PasswordForget';
-import CreateTimeline from "../CreateTimeline";
 import CoursesPage from '../Courses';
 import Timeline from '../Timeline';
 import AccountPage from '../Account';
@@ -25,7 +24,6 @@ const AppBase = () => (
             <Route path={ROUTES.PASSWORD_FORGET} component={PasswordForgetPage} />
             <Route path={ROUTES.COURSES} component={CoursesPage} />
             <Route path={ROUTES.TIMELINE_ID} component={Timeline} />
-            <Route path={ROUTES.CREATE_TIMELINE_ID} component={CreateTimeline} />
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
             <Route path={ROUTES.ADMIN} component={AdminPage} />
         </div>

@@ -1,114 +1,45 @@
 import React, { Component } from 'react';
 import {withFirebase} from "../Firebase";
-import withAuthorization from "../Session/withAuthorization";
 import { withRouter } from 'react-router-dom';
-import * as ROUTES from "../../constants/routes";
 import {compose} from "recompose";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import {NavigationCourse} from "../Navigation";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import Moment from 'moment';
 
-class CreateTimeline extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            loading: true,
-            events: [],
-            courseInstance: undefined,
-            name: "",
-        };
-    }
-
-    componentDidMount() {
-        this.setState({ loading: true });
-
-        const { match: { params } } = this.props;
-
-        this.props.firebase.courseInstance(params.id)
-            .get()
-            .then(snapshot => {
-                const courseInstance = { ...snapshot.data(), cid: snapshot.id };
-
-                if(courseInstance) {
-                    this.setState({
-                        courseInstance: courseInstance,
-                    });
-                    console.log(this.state.courseInstance)
-
-
-                    this.props.firebase.course(this.state.courseInstance.instanceOf)
-                        .get()
-                        .then(snapshot => {
-                            const course = snapshot.data();
-
-                            this.setState({
-                                name: course.name,
-                            });
-                        });
-
-                    this.props.firebase
-                        .courseEvents()
-                        .where("course", "==", params.id)
-                        .get()
-                        .then(snapshot => {
-                            let events = [];
-
-                            snapshot.forEach(doc =>
-                                events.push({...doc.data(), timestamp: doc.data().dateTime, eid: doc.id}),
-                            );
-
-                            this.setState({
-                                loading: false,
-                                events: events,
-                            });
-                        });
-                }
-            });
-    }
-
-    render() {
-        return (
-            <div>
-                <NavigationCourse authUser={this.props.authUser} course={this.state.courseInstance}/>
-                <main>
-                    <div>
-                        <h1>Create Timeline</h1>
-                        <div className="main">
-                            <h2>New Event</h2>
-                            <CreateTimelineForm/>
-                        </div>
-                    </div>
-                </main>
-            </div>
-        );
-    }
-}
 const INITIAL_STATE = {
     name: '',
     about: '',
-    fromDate: '',
-    fromTime: '',
-    toDate: '',
-    toTime: '',
+    from: new Date(),
+    to: new Date(),
     location: '',
     type: 'session',
 };
 
-class CreateBlockForm extends Component {
+class CreateEventForm extends Component {
     constructor(props) {
         super(props);
 
         this.state = { ...INITIAL_STATE };
+        this.handleChangeFrom = this.handleChangeFrom.bind(this);
+        this.handleChangeTo = this.handleChangeTo.bind(this);
+
+    }
+
+    componentDidMount() {
+        const { match: { params } } = this.props;
+
+        this.setState({
+            id: params.id
+        })
     }
 
     onSubmit = event => {
         const {
             name,
             about,
-            fromDate,
-            fromTime,
-            toDate,
-            toTime,
+            from,
+            to,
             location,
             type
         } = this.state;
@@ -119,16 +50,17 @@ class CreateBlockForm extends Component {
                 about: about,
                 location: location,
                 type: type,
-                dateTime: fromDate+" "+fromTime,
-                toDateTime: toDate+" "+toTime,
+                dateTime: Moment(from).format("DD/MM/YYYY HH:mm").toString(),
+                toDateTime: Moment(to).format("DD/MM/YYYY HH:mm").toString(),
+                course: this.state.id,
             })
             .then(docRef => {
-                console.log("Document written with ID: ", docRef.id);
+                // console.log("Document written with ID: ", docRef.id);
                 this.setState({ ...INITIAL_STATE });
-                this.props.history.push(ROUTES.TIMELINE);
+                window.location.reload(true)
             })
             .catch((error) => {
-                console.log("Error getting documents: ", error);
+                // console.log("Error getting documents: ", error);
                 this.setState({ error });
             });
 
@@ -139,14 +71,21 @@ class CreateBlockForm extends Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
+    handleChangeFrom(date) {
+        this.setState({ from: date });
+    }
+
+    handleChangeTo(date) {
+        this.setState({ to: date });
+    }
+
+
     render() {
         const {
             name,
             about,
-            fromDate,
-            fromTime,
-            toDate,
-            toTime,
+            from,
+            to,
             location,
             type,
         } = this.state;
@@ -154,10 +93,8 @@ class CreateBlockForm extends Component {
         const isInvalid =
             name === '' ||
             about === '' ||
-            fromDate === '' ||
-            fromTime === '' ||
-            toDate === '' ||
-            toTime === '' ||
+            from === null ||
+            to === null ||
             location === '';
 
         return(
@@ -192,43 +129,36 @@ class CreateBlockForm extends Component {
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label for="fromDate">From date</Label>
-                    <Input
-                        name="fromDate"
-                        id="fromDate"
-                        value={fromDate}
-                        onChange={this.onChange}
-                        type="date"
-                        placeholder="From Date"
+                    <Label for="from">From</Label>
+                    <br></br>
+                    <DatePicker
+                        name="from"
+                        id="from"
+                        selected={this.state.from}
+                        onChange={this.handleChangeFrom}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        dateFormat="dd/MM/yyyy HH:mm"
+                        timeCaption="time"
                     />
-                    <Label for="fromTime">From time</Label>
-                    <Input
-                        name="fromTime"
-                        id="fromTime"
-                        value={fromTime}
-                        onChange={this.onChange}
-                        type="time"
-                        placeholder="From Time"
+                    <br></br>
+                    <Label for="to">To</Label>
+                    <br></br>
+                    <DatePicker
+                        name="to"
+                        id="to"
+                        selected={this.state.to}
+                        onChange={this.handleChangeTo}
+                        showTimeSelect
+                        timeFormat="HH:mm"
+                        timeIntervals={15}
+                        dateFormat="dd/MM/yyyy HH:mm"
+                        timeCaption="time"
                     />
-                    <Label for="toDate">To date</Label>
-                    <Input
-                        name="toDate"
-                        id="toDate"
-                        value={toDate}
-                        onChange={this.onChange}
-                        type="date"
-                        min={Date.now()}
-                        placeholder="To Date"
-                    />
-                    <Label for="toTime">To time</Label>
-                    <Input
-                        name="toTime"
-                        id="toTime"
-                        value={toTime}
-                        onChange={this.onChange}
-                        type="time"
-                        placeholder="To Time"
-                    />
+                    <br></br>
+                </FormGroup>
+                <FormGroup>
                     <Label for="type">Type</Label>
                     <Input id="type" type="select" name="type" value={type} onChange={this.onChange}>
                         <option value="Session">Session</option>
@@ -248,12 +178,6 @@ class CreateBlockForm extends Component {
 const CreateTimelineForm = compose(
     withRouter,
     withFirebase
-)(CreateBlockForm);
-
-const condition = authUser => !!authUser;
-
-// const condition = ({authUser, course}) => authUser && (authUser.uid===course.hasInstructor);
-
-export default withAuthorization(condition)(CreateTimeline);
+)(CreateEventForm);
 
 export { CreateTimelineForm };

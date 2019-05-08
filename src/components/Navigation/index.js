@@ -71,11 +71,6 @@ const NavigationCourse = ({ authUser, course }) => (
                 <Link to={ROUTES.TIMELINE + course.cid} className="nav-link nav-button">Timeline</Link>
             </NavItem>
             }
-            {course && course.hasInstructor === authUser.uid &&
-                <NavItem>
-                    <Link to={ROUTES.CREATE_TIMELINE + course.cid} className="nav-link nav-button">Create Timeline</Link>
-                </NavItem>
-            }
             <NavItem>
               <NavLink>
                   <span className="fake-nav">Topics</span>

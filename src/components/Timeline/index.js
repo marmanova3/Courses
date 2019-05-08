@@ -5,6 +5,7 @@ import EventsList, {BlockMenu} from "../Events"
 import { Container, Row, Col } from 'reactstrap';
 import './Timeline.css';
 import {NavigationCourse} from "../Navigation";
+import ModalCreateEvent from "../ModalCreateEvent";
 
 class Timeline extends Component {
     constructor(props) {
@@ -51,14 +52,13 @@ class Timeline extends Component {
                             let events = [];
 
                             snapshot.forEach(doc =>
-                                    events.push({...doc.data(), timestamp: doc.data().dateTime, eid: doc.id}),
+                                    events.push({...doc.data(), eid: doc.id}),
                             );
 
                             this.setState({
                                 loading: false,
                                 events: events,
                             });
-                            // let bool = await isEnrolledIn(this.props.authUser.uid, this.state.courseInstance.cid, this.props.firebase);
                         });
                 }
             });
@@ -74,6 +74,9 @@ class Timeline extends Component {
                         <Row>
                             <Col xs="auto">
                                 <BlockMenu courseEvents={this.state.events}/>
+                                {this.state.courseInstance && this.props.authUser.uid===this.state.courseInstance.hasInstructor &&
+                                <ModalCreateEvent/>
+                                }
                             </Col>
                             <Col>
                                 <EventsList courseEvents={this.state.events}/>
@@ -88,8 +91,5 @@ class Timeline extends Component {
 }
 
 const condition = authUser => !!authUser;
-
-// const condition = async ({authUser, course}) => authUser && await isEnrolledIn(authUser.uid, course.cid);
-// const condition = async (authUser, course, firebase) => authUser && await isEnrolledIn(authUser.uid, course.cid, firebase);
 
 export default withAuthorization(condition)(Timeline);
