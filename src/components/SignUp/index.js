@@ -11,7 +11,7 @@ const SignUpPage = () => (
     <div>
         <Navigation />
         <main>
-            <div>
+            <div className="sign-in-div">
                 <h1>Registration</h1>
                 <SignUpForm />
             </div>
@@ -69,7 +69,7 @@ class SignUpFormBase extends Component {
             });
 
         event.preventDefault();
-    }
+    };
 
     onChange = event => {
         this.setState({ [event.target.name]: event.target.value });

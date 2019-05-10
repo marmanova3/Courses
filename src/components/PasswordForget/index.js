@@ -10,10 +10,10 @@ const PasswordForgetPage = () => (
     <div>
         <Navigation />
         <main>
-    <div>
+            <div className="sign-in-div">
         <h1>Reset password</h1>
         <PasswordForgetForm />
-    </div>
+            </div>
         </main>
     </div>
 );
@@ -57,7 +57,7 @@ class PasswordForgetFormBase extends Component {
         return (
             <Form onSubmit={this.onSubmit}>
                <FormGroup>
-                <Label for="email"></Label>
+                <Label for="email">Your e-mail:</Label>
                 <Input
                     name="email"
                     id="email"

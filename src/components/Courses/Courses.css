@@ -3,7 +3,7 @@
 }
 
 .courses {
-    min-width: 900px;
+    min-width: 750px;
     display: flex;
     flex-direction: column;
     /*align-items: center;*/
@@ -35,4 +35,26 @@ a.active.nav-link .tab {
     position: absolute;
     right: 10px;
     bottom: 10px;
+}
+
+@media only screen and (max-width: 800px) {
+    .courses {
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+        /*align-items: center;*/
+    }
+
+    .enroll-button {
+        position: relative;
+        display: block;
+        margin-top: 20px;
+        max-width: 100px;
+    }
+    .list-group-item a {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        align-items: center;
+    }
 }

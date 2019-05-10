@@ -11,12 +11,13 @@ const AccountPage = () => (
             <div>
                 <Navigation />
                 <main>
-                    <div>
-                        <h1>Account: {authUser.email}</h1>
-                        <h2>Reset password</h2>
+                    <div className="sign-in-div">
+                        <h1>Account:</h1>
+                        <h2>{authUser.name} {authUser.surname}</h2>
+                        <h3>Reset password</h3>
                         <PasswordForgetForm />
-                        <br></br>
-                        <h2>Change password</h2>
+                        <br> </br>
+                        <h3>Change password</h3>
                         <PasswordChangeForm />
                     </div>
                 </main>

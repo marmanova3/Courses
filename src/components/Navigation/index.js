@@ -6,6 +6,7 @@ import { AuthUserContext } from '../Session';
 import * as ROUTES from '../../constants/routes';
 import * as ROLES from '../../constants/roles';
 import {
+    Collapse,
     Navbar,
     NavbarToggler,
     NavbarBrand,
@@ -14,20 +15,41 @@ import {
     NavLink } from 'reactstrap';
 import './Navigation.css';
 
-const Navigation = () => (
-    <Navbar className="navbar" expand="md">
-        <NavbarBrand href="/">Matfyz</NavbarBrand>
-        <NavbarToggler />
-        {/*onClick={this.toggle} />*/}
-        <AuthUserContext.Consumer>
-        {authUser => authUser ? (
-            <NavigationAuth authUser={authUser} />
-        ) : (
-            <NavigationNonAuth />
-        )}
-    </AuthUserContext.Consumer>
-    </Navbar>
-);
+
+class Navigation extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.toggle = this.toggle.bind(this);
+        this.state = {
+            isOpen: false
+        };
+    }
+
+    toggle() {
+        this.setState({
+            isOpen: !this.state.isOpen
+        });
+    }
+
+    render() {
+        return (
+            <Navbar className="navbar" expand="md">
+                <NavbarBrand href="/">Matfyz</NavbarBrand>
+                <NavbarToggler onClick={this.toggle} />
+                <Collapse isOpen={this.state.isOpen} navbar>
+                    <AuthUserContext.Consumer>
+                        {authUser => authUser ? (
+                            <NavigationAuth authUser={authUser}/>
+                        ) : (
+                            <NavigationNonAuth/>
+                        )}
+                    </AuthUserContext.Consumer>
+                </Collapse>
+            </Navbar>
+        )
+    };
+}
 
 const NavigationAuth = ({ authUser }) => (
     <Nav>
@@ -61,54 +83,79 @@ const NavigationNonAuth = () => (
     </Nav>
 );
 
-const NavigationCourse = ({ authUser, course }) => (
-    <Navbar className="navbar" expand="md">
-        <NavbarBrand href="/courses">Matfyz</NavbarBrand>
-        <NavbarToggler />
-        <Nav>
-            {course &&
-            <NavItem>
-                <Link to={ROUTES.TIMELINE + course.cid} className="nav-link nav-button">Timeline</Link>
-            </NavItem>
-            }
-            <NavItem>
-              <NavLink>
-                  <span className="fake-nav">Topics</span>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink>
-                  <span className="fake-nav">Results</span>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink>
-                  <span className="fake-nav">Assignments</span>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink>
-                  <span className="fake-nav">Documents</span>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink>
-                  <span className="fake-nav">Quiz</span>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink>
-                  <span className="fake-nav">Info</span>
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink>
-                  <SignOutButton />
-              </NavLink>
-            </NavItem>
-        </Nav>
-    </Navbar>
-);
+const NavigationCourse = ({ authUser, course }) => {
+    class InnerNavigation extends React.Component {
+        constructor(props) {
+            super(props);
+
+            this.toggle = this.toggle.bind(this);
+            this.state = {
+                isOpen: false
+            };
+        }
+
+        toggle() {
+            this.setState({
+                isOpen: !this.state.isOpen
+            });
+        }
+
+        render() {
+            return (
+                <Navbar className="navbar" expand="md">
+                    <NavbarBrand href="/courses">Matfyz</NavbarBrand>
+                    <NavbarToggler onClick={this.toggle}/>
+                    <Collapse isOpen={this.state.isOpen} navbar>
+                        <Nav>
+                            {course &&
+                            <NavItem>
+                                <Link to={ROUTES.TIMELINE + course.cid} className="nav-link nav-button">Timeline</Link>
+                            </NavItem>
+                            }
+                            <NavItem>
+                                <NavLink>
+                                    <span className="fake-nav">Topics</span>
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink>
+                                    <span className="fake-nav">Results</span>
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink>
+                                    <span className="fake-nav">Assignments</span>
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink>
+                                    <span className="fake-nav">Documents</span>
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink>
+                                    <span className="fake-nav">Quiz</span>
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink>
+                                    <span className="fake-nav">Info</span>
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink>
+                                    <SignOutButton/>
+                                </NavLink>
+                            </NavItem>
+                        </Nav>
+                    </Collapse>
+                </Navbar>
+            )
+        }
+    }
+
+    return <InnerNavigation/>;
+};
 
 export default Navigation;
 
