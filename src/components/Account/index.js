@@ -16,7 +16,7 @@ const AccountPage = () => (
                         <h2>{authUser.name} {authUser.surname}</h2>
                         <h3>Reset password</h3>
                         <PasswordForgetForm />
-                        <br> </br>
+                        <br></br>
                         <h3>Change password</h3>
                         <PasswordChangeForm />
                     </div>
