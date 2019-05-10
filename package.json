@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@bit/lekanmedia.shared-ui.date-picker": "0.0.4",
-    "@bit/ziweiwu.react-component.components.date-picker": "^1.0.0",
     "bootstrap": "^4.3.1",
     "classnames": "latest",
     "firebase": "^5.9.2",
